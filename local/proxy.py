@@ -31,7 +31,6 @@ import itertools
 import zlib
 import struct
 import random
-import hashlib
 import fnmatch
 import base64
 import urlparse
@@ -496,10 +495,7 @@ class CertUtil(object):
 
         cert = OpenSSL.crypto.X509()
         cert.set_version(2)
-        try:
-            cert.set_serial_number(int(hashlib.md5(commonname).hexdigest(), 16))
-        except OpenSSL.SSL.Error:
-            cert.set_serial_number(int(time.time()*1000))
+        cert.set_serial_number(int(time.time()*1000))
         cert.gmtime_adj_notBefore(0)
         cert.gmtime_adj_notAfter(60 * 60 * 24 * 3652)
         cert.set_issuer(ca.get_subject())
